@@ -275,9 +275,9 @@ int venc_dev::venc_input_log_buffers(OMX_BUFFERHEADERTYPE *pbuffer, void *pmem_d
        } else {
            DEBUG_PRINT_LOW("Shared PMEM addr for i/p PMEM UseBuf/AllocateBuf: %p", bufhdr->pBuffer);
            buf_addr = (unsigned char *)mmap(NULL,
-                      ((encoder_media_buffer_type *)pbuffer->pBuffer)->meta_handle->data[2],
+                      ((LEGACY_CAM_METADATA_TYPE *)pbuffer->pBuffer)->meta_handle->data[2],
                       PROT_READ|PROT_WRITE, MAP_SHARED,
-                      ((encoder_media_buffer_type *)pbuffer->pBuffer)->meta_handle->data[0], 0);
+                      ((LEGACY_CAM_METADATA_TYPE *)pbuffer->pBuffer)->meta_handle->data[0], 0);
        }
 
        if (m_debug.infile) {
@@ -286,7 +286,7 @@ int venc_dev::venc_input_log_buffers(OMX_BUFFERHEADERTYPE *pbuffer, void *pmem_d
        }
 
        if (!pmem_data_buf) {
-           munmap (buf_addr, ((encoder_media_buffer_type *)pbuffer->pBuffer)->meta_handle->data[2]);
+           munmap (buf_addr, ((LEGACY_CAM_METADATA_TYPE *)pbuffer->pBuffer)->meta_handle->data[2]);
        }
 #else
        if (m_debug.infile) {

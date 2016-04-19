@@ -560,6 +560,8 @@ enum OMX_QCOM_EXTN_INDEXTYPE
     /* Encoder Low Latency mode */
     OMX_QcomIndexConfigVideoVencLowLatencyMode = 0x7F000054,
 
+    /* OMX.google.android.index.allocateNativeHandle */
+    OMX_GoogleAndroidIndexAllocateNativeHandle = 0x7F00005D,
 };
 
 /**
@@ -904,7 +906,7 @@ typedef struct QOMX_VIDEO_SYNTAXHDRTYPE
    OMX_VERSIONTYPE nVersion;/** OMX specification version information */
    OMX_U32 nPortIndex;      /** Portindex which is extended by this structure */
    OMX_U32 nBytes;          /** The number of bytes filled in to the buffer */
-   OMX_U8 data[1];          /** Buffer to store the header information */
+   OMX_U8 data[1];          /** Buffer to store the  header information */
 } QOMX_VIDEO_SYNTAXHDRTYPE;
 
 /**
