@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d8098520_df342cf2",
+        "filename": "libstagefrighthw/QComOMXMetadata.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001755
+      },
+      "writtenOn": "2016-10-24T05:36:55Z",
+      "side": 1,
+      "message": "Wait, this isn\u0027t needed anymore according to https://github.com/omnirom/android_hardware_qcom_media-caf-msm8916/commit/c2ce00071d1a9a98942df6f5cd0421e56402c992\nI\u0027ll run a test build first",
+      "revId": "9fac2bdad60d8bfee1ce3c4aeb15ede66143327f",
+      "serverId": "56841c99-7c94-43d4-bf0b-cb4707e66d55",
+      "unresolved": false
+    }
+  ]
+}
