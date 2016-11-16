@@ -560,6 +560,21 @@ enum OMX_QCOM_EXTN_INDEXTYPE
     /* Encoder Low Latency mode */
     OMX_QcomIndexConfigVideoVencLowLatencyMode = 0x7F000054,
 
+    /* OMX.google.android.index.allocateNativeHandle */
+    OMX_GoogleAndroidIndexAllocateNativeHandle = 0x7F00005D,
+
+    /*"OMX.google.android.index.describeColorAspects"*/
+    OMX_QTIIndexConfigDescribeColorAspects = 0x7F000062,
+
+    OMX_QTIIndexParamVUIExtraDataExtraData = 0x7F000063,
+
+    OMX_QTIIndexParamMPEG2SeqDispExtraData = 0x7F000064,
+
+    OMX_QTIIndexParamVC1SeqDispExtraData = 0x7F000065,
+
+    OMX_QTIIndexParamVPXColorSpaceExtraData = 0x7F000066,
+    /* Enable client extradata */
+    OMX_QTIIndexParamVideoClientExtradata = 0x7F000060,
 };
 
 /**
@@ -1575,6 +1590,9 @@ typedef struct QOMX_VIDEO_CUSTOM_BUFFERSIZE {
 #define OMX_QCOM_INDEX_CONFIG_VIDEO_QP "OMX.QCOM.index.config.video.qp"
 #define OMX_QCOM_INDEX_PARAM_VIDEO_SAR "OMX.QCOM.index.param.video.sar"
 
+#define OMX_QTI_INDEX_CONFIG_COLOR_ASPECTS "OMX.google.android.index.describeColorAspects"
+#define OMX_QTI_INDEX_PARAM_VIDEO_CLIENT_EXTRADATA "OMX.QTI.index.param.client.extradata"
+
 typedef enum {
     QOMX_VIDEO_FRAME_PACKING_CHECKERBOARD = 0,
     QOMX_VIDEO_FRAME_PACKING_COLUMN_INTERLEAVE = 1,
@@ -1866,6 +1884,15 @@ typedef struct QOMX_VIDEO_BATCHSIZETYPE {
     OMX_U32 nPortIndex;
     OMX_U32 nBatchSize;
 } QOMX_VIDEO_BATCHSIZETYPE;
+
+typedef struct QOMX_VIDEO_CLIENT_EXTRADATA {
+    OMX_U32 nSize;
+    OMX_VERSIONTYPE nVersion;
+    OMX_U32 nPortIndex;
+    OMX_U32 nFd;
+    OMX_U32 nExtradataAllocSize;
+    OMX_U32 nExtradataSize;
+} QOMX_VIDEO_CLIENT_EXTRADATATYPE;
 
 #ifdef __cplusplus
 }

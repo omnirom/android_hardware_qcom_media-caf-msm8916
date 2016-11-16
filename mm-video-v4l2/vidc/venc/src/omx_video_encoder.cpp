@@ -260,6 +260,18 @@ OMX_ERRORTYPE omx_venc::component_init(OMX_STRING role)
     m_sIntraRefresh.nPortIndex = (OMX_U32) PORT_INDEX_OUT;
     m_sIntraRefresh.eRefreshMode = OMX_VIDEO_IntraRefreshMax;
 
+    OMX_INIT_STRUCT(&m_sConfigColorAspects, DescribeColorAspectsParams);
+    m_sConfigColorAspects.nPortIndex = (OMX_U32) PORT_INDEX_OUT;
+    m_sConfigColorAspects.sAspects.mRange =  ColorAspects::RangeUnspecified;
+    m_sConfigColorAspects.sAspects.mPrimaries = ColorAspects::PrimariesUnspecified;
+    m_sConfigColorAspects.sAspects.mMatrixCoeffs = ColorAspects::MatrixUnspecified;
+    m_sConfigColorAspects.sAspects.mTransfer = ColorAspects::TransferUnspecified;
+#ifdef SUPPORT_CONFIG_INTRA_REFRESH
+    OMX_INIT_STRUCT(&m_sConfigIntraRefresh, OMX_VIDEO_CONFIG_ANDROID_INTRAREFRESHTYPE);
+    m_sConfigIntraRefresh.nPortIndex = (OMX_U32) PORT_INDEX_OUT;
+    m_sConfigIntraRefresh.nRefreshPeriod = 0;
+#endif
+
     if (codec_type == OMX_VIDEO_CodingMPEG4) {
         m_sParamProfileLevel.eProfile = (OMX_U32) OMX_VIDEO_MPEG4ProfileSimple;
         m_sParamProfileLevel.eLevel = (OMX_U32) OMX_VIDEO_MPEG4Level0;
@@ -1832,6 +1844,38 @@ OMX_ERRORTYPE  omx_venc::set_config(OMX_IN OMX_HANDLETYPE      hComp,
                 }
                 break;
             }
+        case OMX_QTIIndexConfigDescribeColorAspects:
+           {
+               VALIDATE_OMX_PARAM_DATA(configData, DescribeColorAspectsParams);
+               DescribeColorAspectsParams *params = (DescribeColorAspectsParams *)configData;
+               print_debug_color_aspects(&(params->sAspects), "set_config");
+               if (!handle->venc_set_config(configData, (OMX_INDEXTYPE)OMX_QTIIndexConfigDescribeColorAspects)) {
+                   DEBUG_PRINT_ERROR("Failed to set OMX_QTIIndexConfigDescribeColorAspects");
+                   return OMX_ErrorUnsupportedSetting;
+               }
+               memcpy(&m_sConfigColorAspects, configData, sizeof(m_sConfigColorAspects));
+               break;
+           }
+#ifdef SUPPORT_CONFIG_INTRA_REFRESH
+       case OMX_IndexConfigAndroidIntraRefresh:
+           {
+            OMX_VIDEO_CONFIG_ANDROID_INTRAREFRESHTYPE* pParam =
+                (OMX_VIDEO_CONFIG_ANDROID_INTRAREFRESHTYPE*) configData;
+                if (m_state == OMX_StateLoaded
+                        || m_sInPortDef.bEnabled == OMX_FALSE
+                        || m_sOutPortDef.bEnabled == OMX_FALSE) {
+                    if (!handle->venc_set_config(configData, (OMX_INDEXTYPE)OMX_IndexConfigAndroidIntraRefresh)) {
+                        DEBUG_PRINT_ERROR("Failed to set OMX_IndexConfigVideoIntraRefreshType");
+                        return OMX_ErrorUnsupportedSetting;
+                    }
+                    m_sConfigIntraRefresh.nRefreshPeriod = pParam->nRefreshPeriod;
+               } else {
+                    DEBUG_PRINT_ERROR("ERROR: Setting OMX_IndexConfigAndroidIntraRefresh supported only at start of session");
+                    return OMX_ErrorUnsupportedSetting;
+                }
+               break;
+           }
+#endif
         default:
             DEBUG_PRINT_ERROR("ERROR: unsupported index %d", (int) configIndex);
             break;
