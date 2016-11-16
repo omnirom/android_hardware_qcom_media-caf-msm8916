@@ -3238,6 +3238,7 @@ OMX_ERRORTYPE  omx_vdec::get_parameter(OMX_IN OMX_HANDLETYPE     hComp,
         /* Added for parameter test */
     case OMX_IndexParamCompBufferSupplier:
         {
+            VALIDATE_OMX_PARAM_DATA(paramData, OMX_PARAM_BUFFERSUPPLIERTYPE);
             OMX_PARAM_BUFFERSUPPLIERTYPE *bufferSupplierType =
                 (OMX_PARAM_BUFFERSUPPLIERTYPE*) paramData;
             DEBUG_PRINT_LOW("get_parameter: OMX_IndexParamCompBufferSupplier");
